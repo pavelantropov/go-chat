@@ -1,6 +1,10 @@
 package main
 
-import "github.com/gorilla/websocket"
+import (
+	"log"
+
+	"github.com/gorilla/websocket"
+)
 
 type client struct {
 	socket *websocket.Conn
@@ -18,6 +22,7 @@ func (c *client) read() {
 		_, msg, err := c.socket.ReadMessage()
 
 		if err != nil {
+			log.Println(err)
 			return
 		}
 
@@ -29,6 +34,11 @@ func (c *client) write() {
 	defer c.socket.Close()
 
 	for msg := range c.receive {
-		c.socket.WriteMessage(websocket.TextMessage, msg)
+		err := c.socket.WriteMessage(websocket.TextMessage, msg)
+
+		if err != nil {
+			log.Println(err)
+			return
+		}
 	}
 }
