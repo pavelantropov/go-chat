@@ -51,11 +51,11 @@ var upgrader = &websocket.Upgrader{
 	WriteBufferSize: messageBufferSize,
 }
 
-func (r *room) ServerHttp(w http.ResponseWriter, req *http.Request) {
+func (r *room) ServeHTTP(w http.ResponseWriter, req *http.Request) {
 	socket, err := upgrader.Upgrade(w, req, nil)
 
 	if err != nil {
-		log.Fatalln("ServerHTTP: ", err)
+		log.Fatalln("ServeHTTP:", err)
 		return
 	}
 
